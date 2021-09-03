@@ -1,0 +1,12 @@
+* {
+  box-sizing: border-box;
+}
+
+.grid{
+  display: grid;
+  grid-gap: 20px;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
