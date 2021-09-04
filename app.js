@@ -20,6 +20,9 @@ app.use(expressSession({
   resave: true
 }));
 
+const flash = require('connect-flash');
+app.use(flash());
+
 const { connectDatabase, cloudinary } = require('./utils/helper');
 connectDatabase();
 
@@ -36,14 +39,6 @@ app.use((req, res, next) => {
 app.use('/', productRouter);
 app.use('/member', memberRouter);
 app.use('/admin', adminRouter);
-
-
-
-
-
-
-
-
 
 app.use((err, req, res, next) => {
   res.json(err);

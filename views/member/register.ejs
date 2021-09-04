@@ -1,53 +1,34 @@
 <% layout("boilerplate") -%>
+<%- partial("partials/alert") -%> 
+
   <div class="container">
     <h1 class="text-center">REGISTER</h1>
     <form id="form" action="/member/register" method="POST">
       <div class="mb-3">
+        <label for="firstName" class="form-label">Firstname</label>
+        <input name="firstName" type="text" class="form-control" id="firstName" required>
+      </div>
+      <div class="mb-3">
+        <label for="lastName" class="form-label">Lastname</label>
+        <input name="lastName" type="text" class="form-control" id="lastName" required>
+      </div>
+      <div class="mb-3">
         <label for="email" class="form-label">Email address</label>
-        <input name="email" type="email" class="form-control" id="email" aria-describedby="emailHelp">
+        <input required name="email" type="email" class="form-control" id="email" aria-describedby="emailHelp">
         <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
       </div>
       <div class="mb-3">
         <label for="password" class="form-label">Password</label>
-        <input name="password" type="password" class="form-control" id="password">
+        <input name="password" type="password" class="form-control" id="password" required>
       </div>
       <div class="mb-3">
         <!-- for show alert -->
         <div id="liveAlertPlaceholder"></div>
         <label for="rePassword" class="form-label">Re-Password</label>
-        <input name="rePassword" type="password" class="form-control" id="rePassword">
+        <input name="rePassword" type="password" class="form-control" id="rePassword" required>
       </div>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
   </div>
 
-
-  <script>
-    const alertPlaceholder = document.getElementById('liveAlertPlaceholder');
-    const form = document.getElementById('form');
-    
-
-    form.addEventListener('submit', function(ev){
-      ev.preventDefault();
-
-      const password = document.getElementById('password');
-      const rePassword = document.getElementById('rePassword');
-
-      const isValid = validate(password.value, rePassword.value);
-      if(!isValid){
-        return alert("password not same...", 'danger');
-      }
-      
-    })
-
-    function validate(value1, value2){
-      return value1 === value2;
-    }
-
-    function alert(message, type) {
-      const wrapper = document.createElement('div');
-      wrapper.innerHTML = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
-
-      alertPlaceholder.append(wrapper)
-    }
-  </script>
+  <% block('footer').append('<script src="/js/validate.js"></script>') %> 

@@ -1,5 +1,7 @@
 <% layout("boilerplate") -%>
-<% block("head").append('<link rel="stylesheet" href="css/index.css">') %> 
+<% block("head").append('<link rel="stylesheet" href="/css/index.css">') %> 
+<%- partial("partials/alert") -%> 
+
 <% if(products.length > 0) {%>
   <h1 class="text-center">Products</h1>
   <div class="grid">
