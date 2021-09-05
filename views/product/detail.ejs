@@ -1,0 +1,58 @@
+<% layout("boilerplate") -%>
+<%- partial("partials/alert") -%> 
+
+<div class="container">
+  <div class="d-sm-flex p-2">
+    <!-- IMAGE -->
+    <div class="col me-3 mb-3">
+      <% if(product.images.length > 0) {%> 
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+        <% for(let i=0; i< product.images.length; i++) {%> 
+          <div class="carousel-item <%= i === 0 ? 'active' : '' %> ">
+            <img src="<%= cloudUrl + imgSetting + '/' + product.images[i] %>" class="d-block w-100" alt="...">
+          </div>
+        <% } %> 
+          </div>
+        <% if(product.images.length > 1) {%> 
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        <% } %> 
+        </div>
+      <% }else {%> 
+        <img class="img-fluid" src="images/noImg.jpg" alt="">
+      <% } %> 
+    </div>
+    <!-- TEXT -->
+    <div class="col">
+      <h5 class="font-weight-bold text-info"><%= product.name %></h5>
+      <p><%= product.detail %></p>
+      <div class="container">
+        <div class="row my-1">
+          <div class="col">price: $<%= product.price %></div>
+          <% if(user) {%> 
+          <div class="col-auto">
+            <button class="btn btn-sm btn-secondary text-white-50 disable">add to cart</button>
+          </div>
+          <% } %> 
+        </div>
+        <div class="row my-1">
+          <div class="col">remain: <%= product.remain %></div>
+          <% if(user) {%> 
+            <div class="col-auto">
+              <form action="/product/<%= product._id %>" method="post">
+                <input type="submit" class="btn btn-primary" type="button" value="add to wish list">
+              </form>
+            </div>
+          <% } %> 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

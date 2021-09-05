@@ -1,0 +1,29 @@
+<% layout("boilerplate") -%>
+<%- partial("partials/alert") -%> 
+
+<div class="container">
+  <h1 class="text-center">Add product</h1>
+  <form action="/admin/add" method="POST" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label for="name" class="form-label">Product name</label>
+      <input required name="name" type="text" class="form-control" id="name" aria-describedby="emailHelp">
+    </div>
+    <div class="mb-3">
+      <label for="price" class="form-label">Price</label>
+      <input required name="price" type="number" class="form-control" id="price">
+    </div>
+    <div class="mb-3">
+      <label for="detail" class="form-label">Detail</label>
+      <textarea required name="detail" class="form-control" id="detail" rows="3"></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="images" class="form-label">Choose Images</label>
+      <input required multiple name="images" class="form-control" type="file" id="images">
+    </div>
+    <div class="mb-3">
+      <label for="remain" class="form-label">Remain</label>
+      <input required name="remain" type="number" class="form-control" id="remain">
+    </div>
+    <button type="submit" class="btn btn-primary">Add</button>
+  </form>
+</div>

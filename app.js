@@ -23,7 +23,7 @@ app.use(expressSession({
 const flash = require('connect-flash');
 app.use(flash());
 
-const { connectDatabase, cloudinary } = require('./utils/helper');
+const { connectDatabase } = require('./utils/helper');
 connectDatabase();
 
 // Router
