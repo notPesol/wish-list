@@ -17,7 +17,21 @@
         <p class="card-text"><%= p.detail.length > 50 ? p.detail.slice(0, 50) : p.detail %></p>
         <p class="card-text mb-0">remain: <%= p.remain %></p>
         <p class="card-text mb-0">price: $<%= p.price %></p>
-        <p class="card-text"><small class="text-muted"><%= moment(p.updatedAt).fromNow() %></small></p>
+        
+        <div class="row align-items-center">
+          <div class="col">
+            <p class="card-text"><small class="text-muted"><%= moment(p.updatedAt).fromNow() %></small></p>
+          </div>
+          <% if(user) {%> 
+            <% if(user.superUser === true) {%> 
+              <div class="col-auto">
+                <form class="delete" action="/admin/<%= p._id %>" method="POST">
+                  <button class="btn btn-sm btn-danger">remove</button>
+                </form>
+              </div>
+          <% } %> 
+          <% } %> 
+        </div>
       </div>
     </div>
   <% } %>
@@ -27,3 +41,5 @@
     No product to show
   </div>
 <% } %> 
+
+<% block('footer').append('<script src="/js/confirm.js"></script>') %> 

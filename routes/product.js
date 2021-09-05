@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 
 const Product = require("../Models/Product");
+const Wishlist = require('../Models/Wishlist');
+
 const moment = require('moment');
 
 const { CLOUD_BASE_URL: cloudUrl, imgSetting } = require('../utils/config');
@@ -28,6 +30,34 @@ router.get('/:productId', async (req, res, next) => {
     next(error);
   }
 });
+
+router.post('/:productId', async (req, res, next) => {
+  try {
+    const user = res.locals.user;
+    if (!user) return res.redirect('/');
+
+    const { productId } = req.params;
+
+    const wishlist = await Wishlist.findOne({ user: user._id });
+    // if user not have wishlist
+    if (!wishlist) {
+      const newWishlist = new Wishlist({ user: user._id, products: [productId] });
+      await newWishlist.save();
+    }
+
+    const isHad = wishlist.products.some(product => product == productId);
+    if (!isHad) {
+      wishlist.products.push(productId);
+    }
+
+    await wishlist.save();
+    req.flash('success', 'add to wish list success...');
+    return res.redirect(`/${productId}`);
+
+  } catch (error) {
+    next(error);
+  }
+})
 
 
 module.exports = router;

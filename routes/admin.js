@@ -70,6 +70,31 @@ router.post('/add', (req, res, next) => {
   });
 });
 
+router.post('/:productId', (req, res, next) => {
+  const user = res.locals.user;
+  if (user) {
+    if (user.superUser) {
+      return next();
+    }
+    return res.redirect('/');
+  }
+},
+  async (req, res, next) => {
+    try {
+      const { productId } = req.params;
+      const product = await Product.findByIdAndDelete(productId);
 
+      if (product.images.length > 0) {
+        for (const imgId of product.images) {
+          const response = await cloudinary.uploader.destroy(imgId);
+          console.log(response);
+        }
+      }
+      req.flash('success', 'Successfully delete');
+      res.redirect('/');
+    } catch (error) {
+      next(error);
+    }
+  })
 
 module.exports = router;

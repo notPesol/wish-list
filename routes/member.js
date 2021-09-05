@@ -2,11 +2,16 @@ const express = require('express');
 const router = express.Router();
 
 const Member = require('../Models/Member');
+const Wishlist = require('../Models/Wishlist');
+
+const moment = require('moment');
+
+const { CLOUD_BASE_URL: cloudUrl, imgSetting } = require('../utils/config');
 
 const bcrypt = require('bcrypt');
 
 router.get('/login', (req, res, next) => {
-  res.render('member/login', {success: req.flash('success'), error: req.flash('error')});
+  res.render('member/login', { success: req.flash('success'), error: req.flash('error') });
 });
 
 router.post('/login', async (req, res, next) => {
@@ -32,7 +37,7 @@ router.post('/login', async (req, res, next) => {
 });
 
 router.get('/register', (req, res, next) => {
-  res.render('member/register', {success: req.flash('success'), error: req.flash('error')});
+  res.render('member/register', { success: req.flash('success'), error: req.flash('error') });
 });
 
 router.post('/register', async (req, res, next) => {
@@ -52,6 +57,35 @@ router.post('/register', async (req, res, next) => {
   }
 
 });
+
+router.get('/wishlist', async (req, res, next) => {
+  try {
+    const user = res.locals.user;
+    if (!user) return res.redirect('/');
+
+    const wishlist = await Wishlist.findOne({ user: user._id }).populate('products');
+    res.render('member/wishlist', { wishlist, moment, cloudUrl, imgSetting, success: req.flash('success'), error: req.flash('error') });
+  } catch (error) {
+    next(error)
+  }
+});
+
+router.post('/:productId', async (req, res, next) => {
+  try {
+    const user = res.locals.user;
+    if (!user) return res.redirect('/');
+
+    const { productId } = req.params;
+    let wishlist = await Wishlist.findOne({ user: user._id });
+
+    wishlist.products = wishlist.products.filter(product => product != productId);
+    await wishlist.save();
+    req.flash('success', 'some product removed from your wishlist');
+    res.redirect('/member/wishlist');
+  } catch (error) {
+    next(error);
+  }
+})
 
 router.get('/logout', (req, res, next) => {
   delete req.session.user;
